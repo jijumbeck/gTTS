@@ -2,10 +2,15 @@ import base64
 import json
 import logging
 import urllib
+import re
 import requests
 
 from gtts.utils import _clean_tokens, _len, _minimize, _translate_url
 from tts import gTTSError
+
+# Logger
+log = logging.getLogger(__name__)
+log.addHandler(logging.NullHandler())
 
 class GTTSGateway:
     GOOGLE_TTS_HEADERS = {
@@ -69,7 +74,7 @@ class GTTSGateway:
         return "f.req={}&".format(urllib.parse.quote(espaced_rpc))
 
     def _send_rpc(self, request):
-                """Do the TTS API request(s) and stream bytes
+        """Do the TTS API request(s) and stream bytes
 
         Raises:
             :class:`gTTSError`: When there's an error with the API request.
